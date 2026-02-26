@@ -71,3 +71,22 @@ El desarrollo sigue el flujo de trabajo estándar de la asignatura:
 - Pull Requests hacia `main` al completar cada tarea
 - Tests automatizados con **Jest**
 
+## Desarrollo
+
+#### 2.1 Diferencia entre skip whitespace y devolver un token
+
+La diferencia fundamental reside en la interacción entre el analizador léxico (lexer)
+y el analizador sintáctico (parser). Cuando el lexer identifica un patrón que coincide
+con `\s+`, ejecuta el bloque asociado que contiene únicamente el comentario
+`/* skip whitespace */`. Al no existir una instrucción `return`, el lexer consume esos
+caracteres y continúa con la búsqueda del siguiente patrón de forma interna, por lo
+que el parser nunca recibe notificación de estos caracteres y resultan totalmente
+transparentes para la gramática.
+
+Por el contrario, cuando el lexer reconoce un patrón como `NUMBER` o `OP`, utiliza
+`return` para detener su ejecución y entregar dicho token al parser. En ese momento,
+el parser evalúa si el token es coherente con las reglas gramaticales y determina si
+la estructura de la expresión es válida. En conclusión, ignorar sirve para limpiar la
+entrada de elementos de formato sin significado, mientras que devolver un token
+proporciona los componentes esenciales con los que el parser construye la traducción
+dirigida por la sintaxis.
