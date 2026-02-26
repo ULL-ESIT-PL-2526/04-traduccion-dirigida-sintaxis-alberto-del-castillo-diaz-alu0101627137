@@ -116,3 +116,11 @@ identificaría el primer `*` como un operador individual de multiplicación y de
 un token `OP`, y acto seguido haría lo mismo con el segundo `*`. Al colocar `**`
 primero, el lexer identifica la secuencia completa como el operador de potencia antes
 de evaluar las reglas individuales, permitiendo que se reconozca como un único token.
+
+#### 2.4 Cuándo se devuelve EOF
+
+El token `EOF` se devuelve cuando el analizador léxico detecta que ha alcanzado el
+final de la cadena de entrada y no hay más caracteres por procesar. Su función
+principal es notificar al parser que la lectura ha terminado, permitiéndole validar
+si la estructura reconocida hasta ese momento está completa y es correcta, y proceder
+al cálculo final del valor de la expresión mediante la regla semántica `L → E`.
