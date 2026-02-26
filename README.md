@@ -104,3 +104,15 @@ dirigida por la sintaxis.
 
 La secuencia completa es: `NUMBER` → `OP` → `NUMBER` → `OP` → `INVALID` → `EOF`.
 
+#### 2.3 Por qué `**` debe aparecer antes que `[-+*/]`
+
+El hecho de que `**` deba aparecer antes que `[-+*/]` se debe al principio de
+prioridad por orden de aparición que aplica el analizador léxico. Cuando el lexer lee
+la entrada, intenta hacer coincidir la cadena con las expresiones regulares en el
+orden en que están definidas en el bloque `%lex`.
+
+Si `[-+*/]` se definiera primero, al encontrar la secuencia `**`, el lexer
+identificaría el primer `*` como un operador individual de multiplicación y devolvería
+un token `OP`, y acto seguido haría lo mismo con el segundo `*`. Al colocar `**`
+primero, el lexer identifica la secuencia completa como el operador de potencia antes
+de evaluar las reglas individuales, permitiendo que se reconozca como un único token.
