@@ -124,3 +124,12 @@ final de la cadena de entrada y no hay más caracteres por procesar. Su función
 principal es notificar al parser que la lectura ha terminado, permitiéndole validar
 si la estructura reconocida hasta ese momento está completa y es correcta, y proceder
 al cálculo final del valor de la expresión mediante la regla semántica `L → E`.
+
+#### 2.5 Por qué existe la regla `.` que devuelve INVALID
+
+La regla `.` existe como mecanismo de gestión de errores léxicos. Su función es
+capturar cualquier carácter que no coincida con las reglas definidas anteriormente,
+como los números o los operadores permitidos. Sin ella, el lexer se detendría
+abruptamente al encontrar un carácter inesperado como `@` o `$`. Al devolver
+`INVALID`, el lexer informa al parser de la presencia de un elemento extraño,
+permitiendo que el sistema gestione el error de forma controlada en lugar de colapsar.
