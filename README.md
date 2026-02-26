@@ -90,3 +90,17 @@ la estructura de la expresión es válida. En conclusión, ignorar sirve para li
 entrada de elementos de formato sin significado, mientras que devolver un token
 proporciona los componentes esenciales con los que el parser construye la traducción
 dirigida por la sintaxis.
+
+#### 2.2 Secuencia de tokens para `123**45+@`
+
+| Lexema | Token   |
+|--------|---------|
+| `123`  | NUMBER  |
+| `**`   | OP      |
+| `45`   | NUMBER  |
+| `+`    | OP      |
+| `@`    | INVALID |
+|        | EOF     |
+
+La secuencia completa es: `NUMBER` → `OP` → `NUMBER` → `OP` → `INVALID` → `EOF`.
+
