@@ -68,7 +68,7 @@ El desarrollo sigue el flujo de trabajo estándar de la asignatura:
 
 - Gestión de tareas mediante **issues** en GitHub
 - Ramas separadas para desarrollo (`dev`) y documentación (`doc`)
-- Pull Requests hacia `main` al completar cada tarea
+- Merge hacia `main` al completar la practica
 - Tests automatizados con **Jest**
 
 ## Desarrollo
