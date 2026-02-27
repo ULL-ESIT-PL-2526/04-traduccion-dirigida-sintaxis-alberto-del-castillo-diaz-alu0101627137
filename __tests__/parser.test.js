@@ -110,7 +110,7 @@ describe('Parser Tests', () => {
       expect(() => parse("3 +")).toThrow();
       expect(() => parse("+ 3")).toThrow();
       expect(() => parse("3 + + 4")).toThrow();
-      expect(() => parse("3.5")).toThrow(); // Only integers are supported
+      // expect(() => parse("3.5")).toThrow(); // Only integers are supported
     });
 
     test('should handle incomplete expressions', () => {
@@ -128,4 +128,77 @@ describe('Parser Tests', () => {
     });
   });
 
+// NUEVOS TEST LINEA DE COMENTRAIOS
+  describe('Line comments', () => {
+    test('should skip a single-line comment before expression', () => {
+      expect(parse("// comentario\n42")).toBe(42);
+      expect(parse("// comentario\n3 + 5")).toBe(8);
+    });
+
+    test('should skip an inline comment after expression', () => {
+      expect(parse("3 + 5 // suma")).toBe(8);
+      expect(parse("10 - 3 // resta")).toBe(7);
+    });
+
+    test('should skip multiple consecutive comments', () => {
+      expect(parse("// primer comentario\n// segundo comentario\n2 * 4")).toBe(8);
+    });
+
+    test('should skip an empty comment', () => {
+      expect(parse("//\n42")).toBe(42);
+    });
+
+    test('should skip comments with special characters', () => {
+      expect(parse("// @#$%^&*\n10")).toBe(10);
+      expect(parse("// 3 + 5\n2 + 2")).toBe(4);
+    });
+  });
+
+// NUEVOS TEST NUMERO FLOTANTES
+  describe('Floating point numbers', () => {
+    test('should parse simple decimal numbers', () => {
+      expect(parse("2.35")).toBeCloseTo(2.35);
+      expect(parse("0.5")).toBeCloseTo(0.5);
+      expect(parse("0.001")).toBeCloseTo(0.001);
+      expect(parse("1.0")).toBeCloseTo(1.0);
+    });
+
+    test('should parse scientific notation with lowercase e', () => {
+      expect(parse("2.35e3")).toBeCloseTo(2350);
+      expect(parse("2.35e+3")).toBeCloseTo(2350);
+      expect(parse("2.35e-3")).toBeCloseTo(0.00235);
+      expect(parse("5e2")).toBeCloseTo(500);
+    });
+
+    test('should parse scientific notation with uppercase E', () => {
+      expect(parse("2.35E3")).toBeCloseTo(2350);
+      expect(parse("2.35E+3")).toBeCloseTo(2350);
+      expect(parse("2.35E-3")).toBeCloseTo(0.00235);
+      expect(parse("1.2E+2")).toBeCloseTo(120);
+    });
+
+    test('should still parse integers correctly', () => {
+      expect(parse("23")).toBe(23);
+      expect(parse("100")).toBe(100);
+    });
+
+    test('should handle arithmetic with decimal numbers', () => {
+      expect(parse("1.5 + 1.5")).toBeCloseTo(3.0);
+      expect(parse("10.5 * 2")).toBeCloseTo(21);
+      expect(parse("2.5 - 1.0")).toBeCloseTo(1.5);
+      expect(parse("5.0 / 2")).toBeCloseTo(2.5);
+    });
+
+    test('should handle arithmetic with scientific notation', () => {
+      expect(parse("1.5e2 + 0.5e2")).toBeCloseTo(200);
+      expect(parse("1.5e2 / 2")).toBeCloseTo(75);
+      expect(parse("2e3 * 2")).toBeCloseTo(4000);
+    });
+
+    test('should handle floats with comments', () => {
+      expect(parse("2.35e-3 + 1 // suma con float")).toBeCloseTo(1.00235);
+      expect(parse("// operacion\n1.5 * 2")).toBeCloseTo(3.0);
+    });
+  });
+  
 });
